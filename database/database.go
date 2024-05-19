@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/fsmardani/go-for-example/models"
+	"github.com/spf13/viper"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -19,12 +20,17 @@ var DB Dbinstance
 
 func ConnectDb() {
 	dsn := fmt.Sprintf(
-		"%s:%sm@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local",
-		os.Getenv("DB_USER"),
-		os.Getenv("DB_PASSWORD"),
-		os.Getenv("DB_HOST"),
-		os.Getenv("DB_PORT"),
-		os.Getenv("DB_NAME"),
+		"%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local",
+		// os.Getenv("DB_USER"),
+		// os.Getenv("DB_PASSWORD"),
+		// os.Getenv("DB_HOST"),
+		// os.Getenv("DB_PORT"),
+		// os.Getenv("DB_NAME"),
+		viper.Get("DB_USER"),
+		viper.Get("DB_PASSWORD"),
+		viper.Get("DB_HOST"),
+		viper.Get("DB_PORT"),
+		viper.Get("DB_NAME"),
 	)
 
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{

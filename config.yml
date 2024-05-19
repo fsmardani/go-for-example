@@ -1,0 +1,7 @@
+version: '3.8'
+
+DB_USER: "root"
+DB_PASSWORD: "1234"
+DB_NAME: "Example"
+DB_HOST: "db"
+DB_PORT: "3306"
