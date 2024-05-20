@@ -1,11 +1,8 @@
 package main
 
 import (
-	"crypto/tls"
-	"net"
+	// "crypto/tls"
 	"fmt"
-	// "io/ioutil"
-	// "log"
 	"github.com/gofiber/fiber/v2"
 	"github.com/spf13/viper"
 	"github.com/ansrivas/fiberprometheus/v2"
@@ -37,21 +34,18 @@ func main() {
 	app.Use(prometheus.Middleware)
 
 	setupRoutes(app)
-	// cert, err := ioutil.ReadFile("certs/local.crt")
-	// if err != nil {
-	//   fmt.Println("Failed to read certificate file: %v", err)
-	// }
-	// fmt.Println(cert)
+
 	// app.Listen(":3000") 
 
-	// app.ListenTLS("127.0.0.1:80", "certs/local.crt", "certs/local.key")
+	app.ListenTLS(":443", "certs/certificate.pem", "certs/key.pem")
 
-	ln, _ := net.Listen("tcp", "127.0.0.1:80")
 
-	cer, _:= tls.LoadX509KeyPair("certs/local.crt", "certs/local.key")
+	// cer, _:= tls.LoadX509KeyPair("certs/certificate.pem", "certs/key.pem")
 
-	ln = tls.NewListener(ln, &tls.Config{Certificates: []tls.Certificate{cer}})
+	// ln, _ := tls.Listen("tcp","127.0.0.1:443", &tls.Config{Certificates: []tls.Certificate{cer}})
 
-	app.Listener(ln)
+	// app.Listener(ln)
+
+
 
 }
