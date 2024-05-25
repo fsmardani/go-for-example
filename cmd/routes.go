@@ -13,7 +13,7 @@ func setupRoutes(app *fiber.App) {
 	
 	app.Get("/", handlers.ListUsers)
 
-	app.Post("/user", jwt, handlers.CreateUser)
+	app.Post("/user", handlers.CreateUser)
 
 	app.Get("/user/:id", handlers.ShowUser)
 
