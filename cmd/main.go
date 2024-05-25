@@ -2,6 +2,7 @@ package main
 
 import (
 	// "crypto/tls"
+	// "os"
 	"fmt"
 	"time"
 
@@ -13,6 +14,8 @@ import (
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
+	// "github.com/rs/zerolog"
+
 
 	"github.com/fsmardani/go-for-example/database"
 	"github.com/fsmardani/go-for-example/models"
@@ -35,6 +38,8 @@ var (
 )
 
 func main() {
+
+
 	//viper config
 	viper.SetConfigType("yaml")
 	viper.SetConfigName("config")
@@ -47,6 +52,9 @@ func main() {
 		fmt.Println(err)
 		return
 	}
+	// viper.AutomaticEnv()
+
+	fmt.Println(viper.Get("TEST_ENV"))
 
 	//DB connection
 	database.ConnectDb()
@@ -63,10 +71,13 @@ func main() {
 	//set routers
 	setupRoutes(app)
 
+
+	
 	// app.Listen(":3000")
 
 	app.ListenTLS(":443", "certs/cert.pem", "certs/key.pem")
 
+	
 	// cer, _:= tls.LoadX509KeyPair("certs/cert.crt", "certs/key.key")
 
 	// ln, _ := tls.Listen("tcp","127.0.0.1:443", &tls.Config{Certificates: []tls.Certificate{cer}})
