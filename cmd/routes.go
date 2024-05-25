@@ -20,4 +20,8 @@ func setupRoutes(app *fiber.App) {
 	app.Get("/user/:id/edit", handlers.EditUser)
 
 	app.Delete("/user/:id", handlers.DeleteUser)
+
+    route := app.Group("/images")
+
+	route.Post("/upload", handlers.UploadFile)
 }

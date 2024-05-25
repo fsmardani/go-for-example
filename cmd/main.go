@@ -16,10 +16,22 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	// "github.com/rs/zerolog"
 
-
-	"github.com/fsmardani/go-for-example/database"
+	// "github.com/fsmardani/go-for-example/database"
+	"github.com/fsmardani/go-for-example/config"
 	"github.com/fsmardani/go-for-example/models"
 )
+
+func init() {
+
+	// fmt.Println("init run..")
+
+	config.InitNats()
+	// fmt.Println("nats run..")
+	// config.MinioConnection()
+	// fmt.Println("minio run..")
+
+	recordMetrics() 
+}
 
 func recordMetrics() {
 	go func() {
@@ -47,22 +59,19 @@ func main() {
 	if err := viper.ReadInConfig(); err != nil {
 		return
 	}
-	var config models.Config
-	if err := viper.Unmarshal(&config); err != nil {
+	var ConfigValues models.Config
+	if err := viper.Unmarshal(&ConfigValues); err != nil {
 		fmt.Println(err)
 		return
 	}
 	// viper.AutomaticEnv()
 
-	fmt.Println(viper.Get("TEST_ENV"))
+
 
 	//DB connection
-	database.ConnectDb()
+	// database.ConnectDb()
 
 	app := fiber.New()
-
-	//prometheus config
-	recordMetrics()
 
 	prometheus.Register(opsProcessed)
 	metricsHandler := promhttp.HandlerFor(prometheus.DefaultGatherer, promhttp.HandlerOpts{})
@@ -71,6 +80,7 @@ func main() {
 	//set routers
 	setupRoutes(app)
 
+	go createThumbnail(config.NatsConn)
 
 	
 	// app.Listen(":3000")

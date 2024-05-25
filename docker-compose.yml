@@ -23,5 +23,24 @@ services:
     volumes:
       - mysql-data:/var/lib/mysql
 
+  minio:
+    image: quay.io/minio/minio
+    container_name: minio
+    environment:
+      - MINIO_ROOT_PASSWORD=minio123
+      - MINIO_ROOT_USER=miniouser
+    ports:
+      - 9000:9000
+      - 9001:9001
+    volumes:
+      - minio-data:/data
+    command: 'server /data --console-address ":9001"'
+
+  nats:
+    image: nats
+    ports:
+      - 4222:4222
+
 volumes:
   mysql-data:
+  minio-data:
