@@ -16,7 +16,7 @@ import (
 )
 
 func init() {
-	config.InitNats()
+	// config.InitNats()
 	config.MinioConnection()
 
 }
@@ -27,7 +27,9 @@ func createThumbnail(natsConn *nats.Conn) {
         ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
         defer cancel()
 
-        obj, err := config.MinioClient.GetObject(ctx, "images", fileName, minio.GetObjectOptions{})
+
+        minioClient, err:= config.MinioConnection()
+        obj, err := minioClient.GetObject(ctx, "images", fileName, minio.GetObjectOptions{})
         if err != nil {
             log.Println(err)
             return
@@ -41,7 +43,7 @@ func createThumbnail(natsConn *nats.Conn) {
         }
 
         thumbnail := imaging.Thumbnail(img, 100, 100, imaging.Lanczos)
-        thumbFileName := strings.TrimSuffix(fileName, ".jpg") + "_thumbnail.jpg"
+        thumbFileName := strings.TrimSuffix(fileName, ".jpeg") + "_thumbnail.jpg"
 
         thumbFile, err := os.Create(thumbFileName)
         if err != nil {
@@ -57,7 +59,7 @@ func createThumbnail(natsConn *nats.Conn) {
         }
 
         thumbFile.Seek(0, 0)
-        _, err = config.MinioClient.PutObject(ctx, "images", thumbFileName, thumbFile, -1, minio.PutObjectOptions{ContentType: "image/jpeg"})
+        _, err = minioClient.PutObject(ctx, "images", thumbFileName, thumbFile, -1, minio.PutObjectOptions{ContentType: "image/jpeg"})
         if err != nil {
             log.Println(err)
         }

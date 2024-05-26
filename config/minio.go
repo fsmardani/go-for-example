@@ -13,10 +13,10 @@ import (
 	// "github.com/gofiber/storage/minio"
 )
 
-var MinioClient *minio.Client
+// var MinioClient *minio.Client
 
 
-func MinioConnection(){
+func MinioConnection()(*minio.Client, error){
     ctx := context.Background()
     endpoint := "minio:9000"
     accessKeyID := "elq1BRA1F0MjqEYJTBRJ"
@@ -26,7 +26,7 @@ func MinioConnection(){
     useSSL := false
 	fmt.Println(accessKeyID,secretAccessKey)
     // Initialize minio client object.
-    MinioClient, errInit := minio.New(endpoint, &minio.Options{
+    minioClient, errInit := minio.New(endpoint, &minio.Options{
         Creds:  credentials.NewStaticV4(accessKeyID, secretAccessKey, ""),
         Secure: useSSL,
     })
@@ -39,10 +39,10 @@ func MinioConnection(){
     bucketName := "images"
     location := "us-east-1"
 
-    err := MinioClient.MakeBucket(ctx, bucketName, minio.MakeBucketOptions{Region: location})
+    err := minioClient.MakeBucket(ctx, bucketName, minio.MakeBucketOptions{Region: location})
     if err != nil {
         // Check to see if we already own this bucket (which happens if you run this twice)
-        exists, errBucketExists := MinioClient.BucketExists(ctx, bucketName)
+        exists, errBucketExists := minioClient.BucketExists(ctx, bucketName)
         if errBucketExists == nil && exists {
             log.Printf("We already own %s\n", bucketName)
         } else {
@@ -51,6 +51,16 @@ func MinioConnection(){
     } else {
         log.Printf("Successfully created %s\n", bucketName)
     }
-    // return minioClient, errInit
+    return minioClient, errInit
+
+    // info, err := MinioClient.FPutObject(ctx, bucketName,"images.jpeg", "images.jpeg", minio.PutObjectOptions{ContentType: "image/jpeg"})
+
+    // if err != nil {
+    //     log.Printf("Successfully not uploaded of size %d\n", info.Size)
+
+    // }
+
+    // log.Printf("Successfully uploaded of size %d\n", info.Size)
+
 
 }
