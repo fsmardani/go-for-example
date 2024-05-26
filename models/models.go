@@ -1,19 +1,22 @@
 package models
 
-import (
-	// "time"
+import "github.com/google/uuid"
 
-	"gorm.io/gorm"
-)
+// "time"
+
+// "gorm.io/gorm"
+// "github.com/google/uuid"
+// "github.com/jmoiron/sqlx"
 
 type User struct {
-	gorm.Model
-	ID  uint  `gorm:"primaryKey"`
-	Name string `json:name`
-	Age string `json:age`
-	Phone_number   string `json:phone_number`
-	Email string `json:"email"`
-	Password string `json:"password"`
+	// gorm.Model
+	ID  uuid.UUID  `db:"id"`
+	// `gorm:"primaryKey"`
+	Name string `db:"name"`
+	Age string `db:"age"`
+	Phone_number   string `db:"phone_number"`
+	Email string `db:"email"`
+	Password string `db:"password"`
 
 }
 

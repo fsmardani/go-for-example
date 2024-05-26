@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	// "fmt"
+	"fmt"
 	"log"
 	"os"
 	"strings"
@@ -16,17 +16,18 @@ import (
 )
 
 func init() {
-	// config.InitNats()
 	config.MinioConnection()
+	config.InitNats()
 
 }
 
-func createThumbnail(natsConn *nats.Conn) {
-    _, err := natsConn.Subscribe("images.uploaded", func(m *nats.Msg) {
+// func createThumbnail(natsConn *nats.Conn) {
+func createThumbnail() {
+    _, err := config.JST.Subscribe("IMAGES.uploaded", func(m *nats.Msg) {
         fileName := string(m.Data)
         ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
         defer cancel()
-
+        
 
         minioClient, err:= config.MinioConnection()
         obj, err := minioClient.GetObject(ctx, "images", fileName, minio.GetObjectOptions{})
@@ -43,7 +44,7 @@ func createThumbnail(natsConn *nats.Conn) {
         }
 
         thumbnail := imaging.Thumbnail(img, 100, 100, imaging.Lanczos)
-        thumbFileName := strings.TrimSuffix(fileName, ".jpeg") + "_thumbnail.jpg"
+        thumbFileName := strings.Split(fileName, ".")[0] + "_thumbnail."+strings.Split(fileName, ".")[1]
 
         thumbFile, err := os.Create(thumbFileName)
         if err != nil {
@@ -63,8 +64,11 @@ func createThumbnail(natsConn *nats.Conn) {
         if err != nil {
             log.Println(err)
         }
+		os.Remove(thumbFileName)
     })
+	// 
     if err != nil {
+		fmt.Println("reached cons")
         log.Fatalln(err)
     }
 }

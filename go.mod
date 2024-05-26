@@ -4,17 +4,19 @@ go 1.22.3
 
 require (
 	github.com/disintegration/imaging v1.6.2
+	github.com/go-sql-driver/mysql v1.8.1
 	github.com/gofiber/fiber/v2 v2.52.4
 	github.com/gofiber/jwt/v3 v3.3.10
 	github.com/golang-jwt/jwt/v4 v4.5.0
+	github.com/google/uuid v1.6.0
+	github.com/jmoiron/sqlx v1.4.0
+	github.com/joho/godotenv v1.5.1
 	github.com/minio/minio-go/v7 v7.0.70
 	github.com/nats-io/nats.go v1.35.0
 	github.com/prometheus/client_golang v1.19.1
 	github.com/rs/zerolog v1.33.0
 	github.com/spf13/viper v1.18.2
 	golang.org/x/crypto v0.23.0
-	gorm.io/driver/mysql v1.5.6
-	gorm.io/gorm v1.25.10
 )
 
 require (
@@ -26,11 +28,9 @@ require (
 	github.com/divrhino/divrhino-trivia v0.0.0-20221017051552-eec99bad7aea // indirect
 	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/fsnotify/fsnotify v1.7.0 // indirect
-	github.com/go-sql-driver/mysql v1.8.1 // indirect
 	github.com/goccy/go-json v0.10.3 // indirect
 	github.com/gofiber/adaptor/v2 v2.2.1 // indirect
 	github.com/gofiber/storage/minio v0.2.2 // indirect
-	github.com/google/uuid v1.6.0 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/jackc/chunkreader/v2 v2.0.1 // indirect
 	github.com/jackc/pgconn v1.14.3 // indirect
@@ -81,5 +81,7 @@ require (
 	google.golang.org/protobuf v1.34.1 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
+	gorm.io/driver/mysql v1.5.6 // indirect
 	gorm.io/driver/postgres v1.5.7 // indirect
+	gorm.io/gorm v1.25.10 // indirect
 )

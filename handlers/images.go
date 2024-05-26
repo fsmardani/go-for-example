@@ -77,7 +77,7 @@ func UploadFile(c *fiber.Ctx) error {
         })
     }
 
-    config.NatsConn.Publish("images.uploaded", []byte(file.Filename))
+    config.JST.Publish("IMAGES.uploaded", []byte(file.Filename))
     log.Printf("Successfully uploaded %s of size %d\n", objectName, info.Size)
 
     return c.JSON(fiber.Map{

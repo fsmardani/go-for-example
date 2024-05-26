@@ -27,7 +27,7 @@ func CheckPasswordHash(password, hash string) bool {
 func FindByCredentials(email, password string) (*models.User, error) {
 	user := models.User{}
 	
-	result := database.DB.Db.Where("email = ?", email).First(&user)
+	result := database.DB.Db.Get(&user ,`SELECT * FROM users WHERE email = ?`, email)
 	if result.Error != nil {
 		log.Error().Msg("user not found")
 		return nil, errors.New("user not found")
@@ -37,9 +37,8 @@ func FindByCredentials(email, password string) (*models.User, error) {
 		log.Error().Msg("password not match!")
 		return nil, errors.New("password not match")
 	}
-	return &user,result.Error
-   }
-
+	return &user,nil
+}
 
 func Login(c *fiber.Ctx) error {
 	loginRequest := new(models.LoginRequest)

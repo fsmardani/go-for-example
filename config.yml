@@ -1,10 +1,14 @@
 version: '3.8'
 
-DB_USER: "root"
-DB_PASSWORD: "1234"
-DB_NAME: "Example"
-DB_HOST: "db"
-DB_PORT: "3306"
-TEST_ENV: "TEST23"
-MINIO_ACCESS_KEY_ID: "elq1BRA1F0MjqEYJTBRJ"
-MINIO_SECRET_ACCESS_KEY: "WVdUY7SUQZs7DEQUh8MbNvcD4HGVmBKlpQqaNEvc"
+db: 
+  user: "root"
+  password: "1234"
+  name: "Example"
+  host: "db"
+  port: "3306"
+minio:
+  access_key_id: "elq1BRA1F0MjqEYJTBRJ"
+  secret_access_key: "WVdUY7SUQZs7DEQUh8MbNvcD4HGVmBKlpQqaNEvc"
+stream:
+  name: "IMAGES"
+
