@@ -5,13 +5,14 @@ import (
 	// "os"
 	// "fmt"
 	// "net/http"
-	
+
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/adaptor"
 	// "github.com/rs/zerolog"
 
 	// "github.com/fsmardani/go-for-example/database"
 	"github.com/fsmardani/go-for-example/config"
+	"github.com/fsmardani/go-for-example/database"
 )
 
 func init() {
@@ -25,7 +26,8 @@ func init() {
 
 
 func main() {
-
+	
+	database.Connect()
 
 	app := fiber.New()
 
@@ -40,10 +42,10 @@ func main() {
 
 	// fmt.Println(config.ConfigValues.GetString("NAME"))
 	
-	// app.Listen(":3000")
+	app.Listen(":3000")
 	// http.ListenAndServe(":3000", nil)
 
-	app.ListenTLS(":443", "certs/cert.pem", "certs/key.pem")
+	// app.ListenTLS(":443", "certs/cert.pem", "certs/key.pem")
 
 	
 	// cer, _:= tls.LoadX509KeyPair("certs/cert.crt", "certs/key.key")

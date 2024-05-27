@@ -5,8 +5,9 @@ import (
 	"github.com/fsmardani/go-for-example/handlers"
 	"github.com/fsmardani/go-for-example/middlewares"
 	"github.com/gofiber/fiber/v2"
-)
+	"github.com/gofiber/websocket/v2"
 
+)
 
 func setupRoutes(app *fiber.App) {
 	jwt := middlewares.NewAuthMiddleware(config.Secret)
@@ -23,7 +24,13 @@ func setupRoutes(app *fiber.App) {
 
 	user_router.Delete("/user/:id", handlers.DeleteUser)
 
-    image_router := app.Group("/images")
+	image_router := app.Group("/images")
 
 	image_router.Post("/upload", handlers.UploadFile)
+
+	chat_router := app.Group("/chats")
+
+
+	chat_router.Get("/ws", websocket.New(handlers.WebSocketHandler))
+
 }

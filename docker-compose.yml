@@ -40,25 +40,22 @@ services:
     image: nats
     ports:
       - 4222:4222
-      - "8222:8222" # Optional: HTTP management port
+      - 8222:8222
     command: >
       -js
       --store_dir=/data/nats
     volumes:
       - nats_data:/data/nats
-  # # n1:
-  #   image: synadia/jsm:nightly
-  #   entrypoint: /nats-server
-  #   command: "--config ./config/jetstream.conf --server_name S1"
-
-  #   ports:
-  #     - 4223:4222
-  #   volumes:
-  #     - ./stream-config:/config
-  #     - ./persistent-data/server-n1/:/data/nats-server/jetstream
+  mongodb:
+    image: mongo:6.0.8
+    ports:
+      - 27017:27017
+    volumes:
+      - mongo-data:/data/db
   
 volumes:
   mysql-data:
+  mongo-data:
   minio-data:
   nats_data: 
     driver: local
