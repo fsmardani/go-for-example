@@ -89,4 +89,3 @@ func handleMessage(msg jetstream.Msg) {
 	// Acknowledge the message
 	msg.Ack()
 }
-
