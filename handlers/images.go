@@ -3,12 +3,13 @@ package handlers
 import (
 	"context"
 	"fmt"
-	// "fmt"
+
 	// "fmt"
 	// "time"
 	// "io"
 	// "bytes"
 	"log"
+	"math/rand/v2"
 
 	"github.com/fsmardani/go-for-example/config"
 	// "github.com/nats-io/nats.go"
@@ -35,7 +36,6 @@ func UploadFile(c *fiber.Ctx) error {
         })
     }
 
-    // Get Buffer from file
     buffer, err := file.Open()
 
     if err != nil {
@@ -45,16 +45,9 @@ func UploadFile(c *fiber.Ctx) error {
         })
     }
     defer buffer.Close()
-    // destination := fmt.Sprintf("./temp/%s", file.Filename)
-    // if err := c.SaveFile(file, destination); err != nil {
-    //     // Handle error
-    //     return err
-    // }
 
-     // Create minio connection.
     minioClient, err:= config.MinioConnection()
      if err != nil {
-                // Return status 500 and minio connection error.
         return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
             "error": true,
             "msg":   err.Error(),
@@ -65,9 +58,7 @@ func UploadFile(c *fiber.Ctx) error {
     fileBuffer := buffer
     contentType := file.Header["Content-Type"][0]
     fileSize := file.Size
-    
-    fmt.Println(contentType,fileSize)
-    // Upload the zip file with PutObject
+
     info, err := minioClient.PutObject(ctx, bucketName, objectName, fileBuffer, fileSize , minio.PutObjectOptions{ContentType: contentType})
 
     if err != nil {
@@ -77,7 +68,10 @@ func UploadFile(c *fiber.Ctx) error {
         })
     }
 
-    config.JST.Publish("IMAGES.uploaded", []byte(file.Filename))
+    _,  err = config.JST.Publish(ctx, fmt.Sprintf("IMAGES.%d", rand.IntN(10)),[]byte(file.Filename) )
+    if err != nil{
+        log.Println(err)
+    }
     log.Printf("Successfully uploaded %s of size %d\n", objectName, info.Size)
 
     return c.JSON(fiber.Map{
